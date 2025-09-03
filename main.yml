@@ -1,0 +1,95 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  description: This is the specification of STD24116
+  title: STD24116
+servers:
+  - url: http://localhost:8080
+paths:
+  /ping:
+    get:
+      summary: return a pong
+      responses:
+        '200':
+          description: return a text pong
+          content:
+            application/json:
+              schema:
+                type: string
+                example: pong
+  /car:
+    get:
+      summary: return a list of car
+      responses:
+        '200':
+          description: return a list of created car
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/car"
+
+    post:
+      summary: create a new car
+      requestBody:
+        description: car base model
+        content:
+          application/json:
+            schema:
+              type: object
+              items:
+                $ref: "#/components/schemas/car"
+      responses:
+        '201':
+          description: create a new car and push it on the car list
+          content:
+            application/json:
+              schema:
+                type: string
+                example: car created
+  /car/{identifier}:
+    get:
+      summary: return car with the exact identifier
+      parameters:
+        - name: identifier
+          required: true
+          in: path
+          schema:
+            type: integer
+            example: c123
+      responses:
+        '200':
+          description: return the identified car
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: "#/components/schemas/car"
+
+components:
+  schemas:
+    car:
+      type: object
+      properties:
+        identifier:
+          type: string
+          example: c123
+        brand:
+          type: string
+          example: none
+        model:
+          type: string
+          example: suzuki
+        characteristics:
+          type: object
+          properties:
+            max_speed:
+              type: integer
+              example: 20000
+            max_fuel_capacity:
+              type: integer
+              example: 5000
+
+
